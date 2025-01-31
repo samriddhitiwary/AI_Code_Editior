@@ -24,21 +24,30 @@ app.use(express.json());
 app.post("/ai-autocomplete", async (req, res) => {
   try {
     const { prompt } = req.body;
-    api.openai.com = process.env.OPENAI_API_KEY;
+    const openaiApiKey = process.env.OPENAI_API_KEY;
+
+    const isDebugging = prompt.toLowerCase().includes("debug"); 
+    const model = isDebugging ? "text-davinci-003" : "code-davinci-002"; 
+
     const response = await axios.post(
       "https://api.openai.com/v1/completions",
       {
-        model: "code-davinci-002",
+        model,
         prompt,
         max_tokens: 50,
       },
-      { headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` } }
+      {
+        headers: { Authorization: `Bearer ${openaiApiKey}` }
+      }
     );
+    
     res.json(response.data.choices[0].text);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 // Code Execution API
 app.post("/run", (req, res) => {

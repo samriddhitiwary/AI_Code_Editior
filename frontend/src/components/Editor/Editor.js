@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import MonacoEditor from "@monaco-editor/react";
 import axios from "axios";
-import { MdLightMode, MdDarkMode } from "react-icons/md"; // Importing Material icons
+import { MdLightMode, MdDarkMode } from "react-icons/md";
+import VoiceInput from "../VoiceInput/VoiceInput"; // Importing the VoiceInput component
 import "./Editor.css";
 
 const socket = io("http://localhost:5000");
@@ -13,6 +14,7 @@ export default function Editor() {
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [output, setOutput] = useState("");
   const [theme, setTheme] = useState("dark");
+  const [voiceInput, setVoiceInput] = useState(""); // Add state for voice input
 
   useEffect(() => {
     socket.emit("joinRoom", "defaultRoom");
@@ -28,7 +30,7 @@ export default function Editor() {
 
   const getAiSuggestion = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt: code });
+      const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt: voiceInput });
       setAiSuggestion(response.data);
     } catch (error) {
       console.error("Error fetching AI suggestions:", error);
@@ -38,14 +40,13 @@ export default function Editor() {
   const runCode = async () => {
     try {
       const response = await axios.post("http://localhost:5000/run", { code, language });
-      console.log("Server Response:", response.data); // Debugging line
+      console.log("Server Response:", response.data);
       setOutput(response.data.output);
     } catch (error) {
       setOutput("Error executing code.");
       console.error("Execution Error:", error);
     }
   };
-  
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
@@ -84,7 +85,9 @@ export default function Editor() {
         <h2>AI Suggestions</h2>
         <pre>{aiSuggestion}</pre>
       </div>
+
+      {/* Pass the voiceInput state to the VoiceInput component */}
+      <VoiceInput setVoiceInput={setVoiceInput} />
     </div>
   );
 }
-
