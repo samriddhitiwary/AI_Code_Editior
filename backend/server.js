@@ -34,7 +34,7 @@ app.post("/ai-autocomplete", async (req, res) => {
       {
         model: model,
         messages: [
-          { role: "system", content: "You are a helpful assistant to write good quality Code. just provide code. Dont provide any text along with code" },
+          { role: "system", content: "You are a helpful assistant to write good quality Code. Just provide code. Dont provide any suggestion or text along with code." },
           { role: "user", content: prompt }
         ],
       },
