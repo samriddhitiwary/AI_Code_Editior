@@ -26,23 +26,26 @@ app.post("/ai-autocomplete", async (req, res) => {
     const { prompt } = req.body;
     const openaiApiKey = process.env.OPENAI_API_KEY;
 
-    const isDebugging = prompt.toLowerCase().includes("debug"); 
-    const model = isDebugging ? "text-davinci-003" : "code-davinci-002"; 
+    // Correct the model name to "gpt-4" instead of "gpt-4o"
+    const model = "gpt-4"; // Use the appropriate model name
 
     const response = await axios.post(
-      "https://api.openai.com/v1/completions",
+      "https://api.openai.com/v1/chat/completions",  // Change endpoint to /chat/completions for newer API
       {
-        model,
-        prompt,
-        max_tokens: 50,
+        model: model,
+        messages: [
+          { role: "system", content: "You are a helpful assistant to write good quality Code. Do not provide theory, just provide code." },
+          { role: "user", content: prompt }
+        ],
       },
       {
         headers: { Authorization: `Bearer ${openaiApiKey}` }
       }
     );
     
-    res.json(response.data.choices[0].text);
+    res.json({ suggestion: response.data.choices[0].message.content });
   } catch (error) {
+    console.error("Error processing AI suggestion:", error); // More detailed error logging
     res.status(500).json({ error: error.message });
   }
 });
