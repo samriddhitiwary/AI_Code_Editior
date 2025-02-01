@@ -33,7 +33,7 @@ export default function Editor() {
   };
 
   const handleCursorChange = (editor) => {
-    editor.onDidChangeCursorPosition((event) => {
+    editor.onDidChangeCursorPosition(() => {
       const position = editor.getPosition();
       socket.emit("cursorMove", { position });
     });
@@ -41,38 +41,17 @@ export default function Editor() {
 
   const removeFirstAndLastLine = (textBlock) => {
     let array = textBlock.split("\n");
-    array = array.filter(function(item) {
-      if(item.includes("```") || item.toLowerCase().includes("the") ){
-        return false;
-      } else {
-        return true;
-      }
-    })
-    return array.join('\n')
-  }
+    array = array.filter(item => !(item.includes("```") || item.toLowerCase().includes("the")));
+    return array.join('\n');
+  };
 
   const getAiSuggestion = async (voiceCommand) => {
     try {
-      let prompt;
-      let actionType;
-  
-      if(code.includes("Start coding...")) {
-        setCode("");
-      }
-      if (code.trim().length > 0) {
-        prompt = `${voiceCommand} for provided code ${code}`
-      } else {
-        prompt = `${voiceCommand}`
-      }
-      
-      console.log(actionType);
-      console.log("Prompt to API:", prompt);
-  
-      const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
-      
+      let prompt = code.trim().length > 0 ? `${voiceCommand} for provided code ${code}` : `${voiceCommand}`;
 
-      const suggestion = removeFirstAndLastLine(response.data.suggestion)
-      
+      const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
+
+      const suggestion = removeFirstAndLastLine(response.data.suggestion);
       setAiSuggestion(suggestion);
       setCode(suggestion);
     } catch (error) {
@@ -90,7 +69,19 @@ export default function Editor() {
     }
   };
 
-  const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const toggleTheme = () => setTheme(prev => (prev === "dark" ? "light" : "dark"));
+
+  const speakAiSuggestion = () => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(aiSuggestion);
+      utterance.lang = "en-US";
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      speechSynthesis.speak(utterance);
+    } else {
+      alert("Sorry, your browser does not support Text-to-Speech.");
+    }
+  };
 
   return (
     <div className={`editor-container ${theme}`}>
@@ -108,6 +99,7 @@ export default function Editor() {
           {theme === "dark" ? <MdLightMode size={24} /> : <MdDarkMode size={24} />}
         </button>
       </div>
+
       <div className="editor-ai-container">
         <div className="editor">
           <MonacoEditor
@@ -123,6 +115,7 @@ export default function Editor() {
         <div className="suggestions">
           <h2>AI Suggestions</h2>
           <pre>{aiSuggestion}</pre>
+          {aiSuggestion && <button className="listen-button" onClick={speakAiSuggestion}>🔊 Listen</button>}
         </div>
       </div>
 
@@ -130,8 +123,6 @@ export default function Editor() {
         <h2>Output</h2>
         <pre className="terminal">{output}</pre>
       </div>
-
-      
     </div>
   );
 }

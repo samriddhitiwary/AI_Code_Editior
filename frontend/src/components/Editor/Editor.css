@@ -84,3 +84,18 @@
 .theme-toggle:hover {
   color: #f39c12;
 }
+
+.listen-button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.listen-button:hover {
+  background-color: #45a049;
+}
