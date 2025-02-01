@@ -40,9 +40,14 @@ export default function Editor() {
   };
 
   const removeFirstAndLastLine = (textBlock) => {
-    const array = textBlock.split("\n");
-    array.pop();
-    array.shift();
+    let array = textBlock.split("\n");
+    array = array.filter(function(item) {
+      if(item.includes("```") || item.toLowerCase().includes("the") ){
+        return false;
+      } else {
+        return true;
+      }
+    })
     return array.join('\n')
   }
 
@@ -65,9 +70,9 @@ export default function Editor() {
   
       const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
       
-      // const languageLowerCase = language.toLocaleLowerCase();
-      // const suggestion = response.data.suggestion.replaceAll("```", "").replace(`${languageLowerCase}\n`, "")
+
       const suggestion = removeFirstAndLastLine(response.data.suggestion)
+      
       setAiSuggestion(suggestion);
       setCode(suggestion);
     } catch (error) {
