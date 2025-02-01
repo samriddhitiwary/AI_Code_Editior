@@ -16,6 +16,7 @@ export default function Editor() {
   const [theme, setTheme] = useState("dark");
   const [voiceInput, setVoiceInput] = useState("");
   const [cursors, setCursors] = useState({});
+  const [userInputText, setUserInputText] = useState('');
 
   useEffect(() => {
     socket.emit("joinRoom", "defaultRoom");
@@ -30,6 +31,15 @@ export default function Editor() {
   const handleCodeChange = (value) => {
     setCode(value);
     socket.emit("codeChange", value);
+  };
+
+  const handleUserInputChange = (event) => {
+    setUserInputText(event.target.value);
+  };
+
+  const handleUserInputSubmit = async () => {
+    await getAiSuggestion(userInputText);
+    // alert(`You entered: ${inputText}`);
   };
 
   const handleCursorChange = (editor) => {
@@ -94,6 +104,14 @@ export default function Editor() {
         </select>
         <button className="run-button" onClick={runCode}>Run</button>
         <button className="ai-button" onClick={() => getAiSuggestion(voiceInput)}>AI Suggest</button>
+        <input
+        type="text"
+        id="userInput"
+        value={userInputText}
+        onChange={handleUserInputChange}
+        placeholder="Type here..."
+      />
+      <button onClick={handleUserInputSubmit}>Submit</button>
         <VoiceInput setVoiceInput={setVoiceInput} getAiSuggestion={getAiSuggestion} />
         <button className="theme-toggle" onClick={toggleTheme}>
           {theme === "dark" ? <MdLightMode size={24} /> : <MdDarkMode size={24} />}
