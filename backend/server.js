@@ -34,7 +34,7 @@ app.post("/ai-autocomplete", async (req, res) => {
       {
         model: model,
         messages: [
-          { role: "system", content: "You are a helpful assistant to write good quality Code. Do not provide theory, just provide code." },
+          { role: "system", content: "You are a helpful assistant to write good quality Code. just provide code. Dont provide any text along with code" },
           { role: "user", content: prompt }
         ],
       },
@@ -151,4 +151,3 @@ io.on("connection", (socket) => {
 });
 
 server.listen(5000, () => console.log("Server running on port 5000"));
-    
