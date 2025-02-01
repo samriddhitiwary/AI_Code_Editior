@@ -58,9 +58,10 @@ export default function Editor() {
       console.log("Prompt to API:", prompt);  // Log the prompt being sent to the API
   
       const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
-      
-      setAiSuggestion(response.data);
-      setCode(response.data);
+      const languageLowerCase = language.toLocaleLowerCase();
+      const suggestion = response.data.suggestion.replaceAll("```", "").replace(`${languageLowerCase}\n`, "")
+      setAiSuggestion(suggestion);
+      setCode(suggestion);
     } catch (error) {
       console.error("Error fetching AI suggestions:", error);
     }
@@ -126,5 +127,3 @@ export default function Editor() {
     </div>
   );
 }
-
-
