@@ -39,29 +39,37 @@ export default function Editor() {
     });
   };
 
+  const removeFirstAndLastLine = (textBlock) => {
+    const array = textBlock.split("\n");
+    array.pop();
+    array.shift();
+    return array.join('\n')
+  }
+
   const getAiSuggestion = async (voiceCommand) => {
     try {
       let prompt;
       let actionType;
   
-      if (voiceCommand.toLowerCase().includes("generate")) {
-        prompt = `Generate code for: ${voiceCommand.replace("generate", "").trim()}`;
-        actionType = "Generating code";
-      } else if (voiceCommand.toLowerCase().includes("debug")) {
-        prompt = `Debug the following code: ${code}`;
-        actionType = "Debugging code";
-      } else {
-        prompt = `Assist with: ${voiceCommand}`;
-        actionType = "Assisting with task";
+      if(code.includes("Start coding...")) {
+        setCode("");
       }
-  
+      if (code.trim().length > 0) {
+        prompt = `${voiceCommand} for provided code ${code}`
+      } else {
+        prompt = `${voiceCommand}`
+      }
+      
       console.log(actionType);
       console.log("Prompt to API:", prompt);
   
       const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
       
-      setAiSuggestion(response.data.suggestion);
-      setCode(response.data.suggestion);
+      // const languageLowerCase = language.toLocaleLowerCase();
+      // const suggestion = response.data.suggestion.replaceAll("```", "").replace(`${languageLowerCase}\n`, "")
+      const suggestion = removeFirstAndLastLine(response.data.suggestion)
+      setAiSuggestion(suggestion);
+      setCode(suggestion);
     } catch (error) {
       console.error("Error fetching AI suggestions:", error);
     }
