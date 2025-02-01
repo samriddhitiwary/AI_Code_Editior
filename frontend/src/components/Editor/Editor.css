@@ -1,77 +1,86 @@
- .editor-container.dark {
-    background: #1e1e1e;
-    color: white;
-  }
-  
-  .editor-container.light {
-    background: #f4f4f4;
-    color: black;
-  }
-  
-  .controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .controls select, .controls button {
-    padding: 8px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .run-button {
-    background: green;
-    color: white;
-  }
-  
-  .ai-button {
-    background: blue;
-    color: white;
-  }
-  
- 
-.theme-toggle {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: rgb(42, 110, 113);
-    transition: color 0.3s ease;
-  }
-  
-  .theme-toggle:hover {
-    color: #f39c12; 
-  }
-  
-  
-  
-  .editor {
-    border: 1px solid #ccc;
-  }
-  
-  .output-container {
-    margin-top: 10px;
-    background: black;
-    padding: 10px;
-  }
-  
-  .terminal {
-    background: black;
-    color: white;
-    padding: 10px;
-    overflow: auto;
-  }
-  
- 
-  .editor-container.light .output-container {
-    background: white;
-  }
-  
-  .editor-container.light .terminal {
-    background: white;
-    color: black;
-  }
-    
+.editor-container.dark {
+  background: #1e1e1e;
+  color: white;
+}
 
+.editor-container.light {
+  background: #f4f4f4;
+  color: black;
+}
+
+.editor-ai-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.editor {
+  width: 50%;
+  border: 1px solid #ccc;
+}
+
+.suggestions {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.output-container {
+  margin-top: 10px;
+  background: black;
+  padding: 10px;
+}
+
+.terminal {
+  background: black;
+  color: white;
+  padding: 10px;
+  overflow: auto;
+}
+
+.editor-container.light .output-container {
+  background: white;
+}
+
+.editor-container.light .terminal {
+  background: white;
+  color: black;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.controls select,
+.controls button {
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.run-button {
+  background: green;
+  color: white;
+}
+
+.ai-button {
+  background: blue;
+  color: white;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: rgb(42, 110, 113);
+  transition: color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  color: #f39c12;
+}

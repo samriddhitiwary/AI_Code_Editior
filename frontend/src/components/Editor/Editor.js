@@ -38,6 +38,7 @@ export default function Editor() {
       socket.emit("cursorMove", { position });
     });
   };
+
   const getAiSuggestion = async (voiceCommand) => {
     try {
       let prompt;
@@ -54,19 +55,17 @@ export default function Editor() {
         actionType = "Assisting with task";
       }
   
-      console.log(actionType);  // Action type logged here
-      console.log("Prompt to API:", prompt);  // Log the prompt being sent to the API
+      console.log(actionType);
+      console.log("Prompt to API:", prompt);
   
       const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
-      const languageLowerCase = language.toLocaleLowerCase();
-      const suggestion = response.data.suggestion.replaceAll("```", "").replace(`${languageLowerCase}\n`, "")
-      setAiSuggestion(suggestion);
-      setCode(suggestion);
+      
+      setAiSuggestion(response.data.suggestion);
+      setCode(response.data.suggestion);
     } catch (error) {
       console.error("Error fetching AI suggestions:", error);
     }
   };
-  
 
   const runCode = async () => {
     try {
@@ -91,20 +90,27 @@ export default function Editor() {
         </select>
         <button className="run-button" onClick={runCode}>Run</button>
         <button className="ai-button" onClick={() => getAiSuggestion(voiceInput)}>AI Suggest</button>
+        <VoiceInput setVoiceInput={setVoiceInput} getAiSuggestion={getAiSuggestion} />
         <button className="theme-toggle" onClick={toggleTheme}>
           {theme === "dark" ? <MdLightMode size={24} /> : <MdDarkMode size={24} />}
         </button>
       </div>
+      <div className="editor-ai-container">
+        <div className="editor">
+          <MonacoEditor
+            height="60vh"
+            theme={theme === "dark" ? "vs-dark" : "vs-light"}
+            language={language}
+            value={code}
+            onChange={handleCodeChange}
+            onMount={handleCursorChange}
+          />
+        </div>
 
-      <div className="editor">
-        <MonacoEditor
-          height="60vh"
-          theme={theme === "dark" ? "vs-dark" : "vs-light"}
-          language={language}
-          value={code}
-          onChange={handleCodeChange}
-          onMount={handleCursorChange}
-        />
+        <div className="suggestions">
+          <h2>AI Suggestions</h2>
+          <pre>{aiSuggestion}</pre>
+        </div>
       </div>
 
       <div className="output-container">
@@ -112,18 +118,7 @@ export default function Editor() {
         <pre className="terminal">{output}</pre>
       </div>
 
-      <div className="suggestions">
-        <h2>AI Suggestions</h2>
-        <pre>{aiSuggestion}</pre>
-      </div>
-
-      <div className="cursor-list">
-        {Object.entries(cursors).map(([id, cursor]) => (
-          <p key={id}>{id}: Line {cursor.position?.lineNumber}, Col {cursor.position?.column}</p>
-        ))}
-      </div>
-
-      <VoiceInput setVoiceInput={setVoiceInput} getAiSuggestion={getAiSuggestion} />
+      
     </div>
   );
 }
