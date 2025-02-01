@@ -25,7 +25,6 @@
     "mdb-react-ui-kit": "^8.0.0",
     "moment": "^2.30.1",
     "multer": "^1.4.5-lts.1",
-    "my-app": "file:",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.7",
     "react-calendar": "^5.1.0",
@@ -38,6 +37,7 @@
     "react-modal": "^3.16.3",
     "react-pdf": "^9.2.1",
     "react-pdf-scroll": "^1.0.0",
+    "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "react-toast": "^1.0.3",
     "react-toastify": "^11.0.2",
@@ -49,7 +49,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": [
@@ -70,6 +71,9 @@
     ]
   },
   "devDependencies": {
-    "react-router-dom": "^6.26.0"
-  }
+    "electron": "^34.0.2",
+    "electron-builder": "^25.1.8",
+    "electron-is-dev": "^3.0.1"
+  },
+  "main": "./src/components/electron/electron.js"
 }

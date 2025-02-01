@@ -139,13 +139,40 @@ app.post("/run", (req, res) => {
 // Real-time Collaboration
 let users = {};
 io.on("connection", (socket) => {
-  socket.on("joinRoom", (room) => {
-    socket.join(room);
-    users[socket.id] = room;
+  socket.on("join-message", (roomId) => {
+    socket.join(roomId);
+    console.log("User joined in a room : " + roomId);
+  });
+
+  socket.on("screen-data", (data) => {
+    data = JSON.parse(data);
+    var room = data.room;
+    var imgStr = data.image;
+    socket.broadcast.to(room).emit('screen-data', imgStr);
+  });
+
+  socket.on("mouse-move", (data) => {
+    var room = JSON.parse(data).room;
+    socket.broadcast.to(room).emit("mouse-move", data);
+  });
+
+  socket.on("mouse-click", (data) => {
+    var room = JSON.parse(data).room;
+    socket.broadcast.to(room).emit("mouse-click", data);
+  });
+
+  socket.on("type", (data) => {
+    var room = JSON.parse(data).room;
+    socket.broadcast.to(room).emit("type", data);
   });
 
   socket.on("codeChange", (data) => {
     socket.to(users[socket.id]).emit("codeUpdate", data);
+  });
+
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    users[socket.id] = room;
   });
 
   socket.on("disconnect", () => {
