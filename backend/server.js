@@ -16,10 +16,14 @@ if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server, { cors: { origin: "*" }, maxHttpBufferSize: 10e6 });
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/view', (req, res) => {
+  res.sendFile(__dirname + '/display.html');
+})
 
 app.post("/ai-autocomplete", async (req, res) => {
   try {
@@ -145,6 +149,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("screen-data", (data) => {
+    // console.log('I AM INSIDE THE SCREEN-DATA',data);
     data = JSON.parse(data);
     var room = data.room;
     var imgStr = data.image;
