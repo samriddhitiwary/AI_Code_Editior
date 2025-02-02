@@ -1,101 +1,166 @@
+/* Container for the editor */
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Dark and Light Themes */
 .editor-container.dark {
   background: #1e1e1e;
   color: white;
 }
 
 .editor-container.light {
-  background: #f4f4f4;
-  color: black;
+  background: #f9f9f9;
+  color: #333;
 }
 
+/* Control Panel */
+.controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.controls select,
+.controls button,
+.controls input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.controls select:hover,
+.controls button:hover,
+.controls input:hover {
+  border-color: #3b9ae1;
+}
+
+/* Button Styles */
+.run-button,
+.ai-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background: #4CAF50; 
+  color: white; 
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  font-weight: bold;
+}
+
+.run-button:hover,
+.ai-button:hover {
+  background: #45a049; /* Darker green on hover */
+}
+
+/* Add text visibility for dark theme */
+.editor-container.dark .run-button,
+.editor-container.dark .ai-button {
+  color: white; /* Ensures text is white in dark mode */
+}
+
+/* Add text visibility for light theme */
+.editor-container.light .run-button,
+.editor-container.light .ai-button {
+  color: #333; /* Ensures text is dark in light mode */
+}
+
+/* Theme button */
+.theme-toggle {
+  background: transparent;
+  color: #f39c12;
+  font-size: 24px;
+}
+
+/* Editor and Suggestions */
 .editor-ai-container {
   display: flex;
-  gap: 10px;
-  width: 100%;
-  margin-bottom: 10px;
+  gap: 20px;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .editor {
-  width: 50%;
+  width: 100%;
+  height: 70vh;
   border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .suggestions {
-  width: 50%;
-  padding: 10px;
-  border: 1px solid #ccc;
+  width: 100%;
+  background: #333;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.output-container {
-  margin-top: 10px;
-  background: black;
+.suggestions h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.suggestions pre {
   padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 16px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.listen-button {
+  background: #4CAF50;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.listen-button:hover {
+  background: #45a049;
+}
+
+/* Output Container */
+.output-container {
+  background: #333;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .terminal {
   background: black;
   color: white;
-  padding: 10px;
-  overflow: auto;
+  padding: 20px;
+  font-family: monospace;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .editor-container.light .output-container {
-  background: white;
+  background: #fff;
 }
 
 .editor-container.light .terminal {
-  background: white;
-  color: black;
+  background: #f4f4f4;
+  color: #333;
 }
 
-.controls {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.controls select,
-.controls button {
-  padding: 8px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.run-button {
-  background: green;
-  color: white;
-}
-
-.ai-button {
-  background: blue;
-  color: white;
-}
-
-.theme-toggle {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: rgb(42, 110, 113);
-  transition: color 0.3s ease;
-}
-
-.theme-toggle:hover {
-  color: #f39c12;
-}
-
-.listen-button {
-  margin-top: 10px;
-  padding: 8px 15px;
-  font-size: 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.listen-button:hover {
-  background-color: #45a049;
+/* Transitions */
+.editor-container {
+  transition: background 0.3s ease, color 0.3s ease;
 }
