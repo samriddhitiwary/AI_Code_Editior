@@ -18,6 +18,16 @@
   color: #333;
 }
 
+.suggestions-container.dark {
+  background: #1e1e1e;
+  color: white}
+
+.suggestions-container.light {
+  background: #f9f9f9;
+  color: #333;
+}
+
+
 /* Control Panel */
 .controls {
   display: flex;
@@ -56,6 +66,7 @@
   font-weight: bold;
 }
 
+
 .run-button:hover,
 .ai-button:hover {
   background: #45a049; /* Darker green on hover */
@@ -68,7 +79,7 @@
 }
 
 /* Add text visibility for light theme */
-.editor-container.light .run-button,
+.editor-container.light .run-button,.suggestions
 .editor-container.light .ai-button {
   color: #333; /* Ensures text is dark in light mode */
 }

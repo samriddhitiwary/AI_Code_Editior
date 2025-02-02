@@ -145,7 +145,8 @@ export default function Editor() {
           />
         </div>
 
-        <div className="suggestions">
+         
+        <div className="suggestions" >
           <h2>AI Suggestions</h2>
           <pre>{aiSuggestion}</pre>
           {aiSuggestion && <button className="listen-button" onClick={speakAiSuggestion}>🔊 Listen</button>}
