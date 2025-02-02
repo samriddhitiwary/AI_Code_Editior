@@ -16,7 +16,7 @@
                 return;
             }
 
-            socket = io.connect('http://192.168.1.4:5000');
+            socket = io.connect('http://localhost:5000');
 
             socket.emit("join-message", room);
             socket.on('screen-data', function(message){
