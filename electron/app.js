@@ -7,8 +7,8 @@ const log = require('electron-log');
 log.initialize();
 
 
-// var socket = require('socket.io-client')('http://localhost:5000');
-var socket = require('socket.io-client')('http://192.168.1.4:5000');
+ var socket = require('socket.io-client')('http://localhost:5000');
+// var socket = require('socket.io-client')('http://192.168.1.4:5000');
 var interval;
 
 function createWindow () {
