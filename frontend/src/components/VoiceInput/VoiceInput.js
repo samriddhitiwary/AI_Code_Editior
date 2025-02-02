@@ -16,7 +16,7 @@ const VoiceInput = ({ getAiSuggestion }) => {
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
-      console.log("User said:", transcript); // Log the recognized speech
+      console.log("User said:", transcript); 
 
       // Trigger AI suggestion dynamically based on the recognized speech
       getAiSuggestion(transcript);
@@ -46,7 +46,7 @@ const VoiceInput = ({ getAiSuggestion }) => {
         {isListening ? "Listening..." : "Start Voice Command"}
       </button>
 
-      {/* Conditionally show the mic popup and animation */}
+    
       {isListening && (
         <div className="voice-popup">
           <div className="mic-container">

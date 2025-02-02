@@ -42,7 +42,7 @@ export default function Editor() {
 
   const handleUserInputSubmit = async () => {
     await getAiSuggestion(userInputText);
-    handleCloseModal();  // Close the modal after submitting
+    handleCloseModal();  
   };
   
   const handleCursorChange = (editor) => {
