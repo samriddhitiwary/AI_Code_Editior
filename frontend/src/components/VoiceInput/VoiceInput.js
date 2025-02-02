@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "./VoiceInput.css"; // Importing the styles
+import { MdMic } from "react-icons/md"; // Mic Icon
 
 const VoiceInput = ({ getAiSuggestion }) => {
   const [isListening, setIsListening] = useState(false);
@@ -22,7 +24,7 @@ const VoiceInput = ({ getAiSuggestion }) => {
 
     recognition.onerror = (event) => {
       console.error("Speech recognition error:", event);
-      if (event.error === 'network') {
+      if (event.error === "network") {
         console.error("Network error - check your internet connection.");
       } else {
         console.error(`Error: ${event.error}`);
@@ -43,6 +45,16 @@ const VoiceInput = ({ getAiSuggestion }) => {
       <button onClick={startRecognition} disabled={isListening}>
         {isListening ? "Listening..." : "Start Voice Command"}
       </button>
+
+      {/* Conditionally show the mic popup and animation */}
+      {isListening && (
+        <div className="voice-popup">
+          <div className="mic-container">
+            <MdMic className="mic-icon" />
+            <div className="mic-wave"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

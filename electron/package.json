@@ -10,6 +10,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "codeboard-screencast-client": "file:",
         "electron": "^11.1.0",
         "electron-log": "^5.3.0",
         "screenshot-desktop": "^1.12.3",

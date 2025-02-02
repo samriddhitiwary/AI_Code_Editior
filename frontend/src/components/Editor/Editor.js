@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import MonacoEditor from "@monaco-editor/react";
 import axios from "axios";
-import { MdLightMode, MdDarkMode } from "react-icons/md";
+import { MdLightMode, MdDarkMode, MdClose } from "react-icons/md";
 import VoiceInput from "../VoiceInput/VoiceInput";
 import "./Editor.css";
 
@@ -17,7 +17,10 @@ export default function Editor() {
   const [voiceInput, setVoiceInput] = useState("");
   const [cursors, setCursors] = useState({});
   const [userInputText, setUserInputText] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
   useEffect(() => {
     socket.emit("joinRoom", "defaultRoom");
     socket.on("codeUpdate", (newCode) => setCode(newCode));
@@ -39,9 +42,9 @@ export default function Editor() {
 
   const handleUserInputSubmit = async () => {
     await getAiSuggestion(userInputText);
-    // alert(`You entered: ${inputText}`);
+    handleCloseModal();  // Close the modal after submitting
   };
-
+  
   const handleCursorChange = (editor) => {
     editor.onDidChangeCursorPosition(() => {
       const position = editor.getPosition();
@@ -104,14 +107,26 @@ export default function Editor() {
         </select>
         <button className="run-button" onClick={runCode}>Run</button>
         <button className="ai-button" onClick={() => getAiSuggestion(voiceInput)}>AI Suggest</button>
-        <input
-        type="text"
-        id="userInput"
-        value={userInputText}
-        onChange={handleUserInputChange}
-        placeholder="Type here..."
-      />
-      <button onClick={handleUserInputSubmit}>Submit</button>
+        <button className="ask-ai-button" onClick={() => setIsModalOpen(true)}>ASK AI</button>
+        {isModalOpen && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <MdClose className="close-modal" onClick={handleCloseModal} />
+            <h2>Ask AI for Suggestions</h2>
+            <input
+              type="text"
+              id="userInput"
+              value={userInputText}
+              onChange={handleUserInputChange}
+              placeholder="Type your question..."
+            />
+            <button onClick={handleUserInputSubmit}>
+              <span className="icon">💬</span> Submit
+            </button>
+          </div>
+        </div>
+      )}
+
         <VoiceInput setVoiceInput={setVoiceInput} getAiSuggestion={getAiSuggestion} />
         <button className="theme-toggle" onClick={toggleTheme}>
           {theme === "dark" ? <MdLightMode size={24} /> : <MdDarkMode size={24} />}
