@@ -49,8 +49,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron": "electron ."
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -69,11 +68,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "electron": "^34.0.2",
-    "electron-builder": "^25.1.8",
-    "electron-is-dev": "^3.0.1"
-  },
-  "main": "./src/components/electron/electron.js"
+  }
 }
