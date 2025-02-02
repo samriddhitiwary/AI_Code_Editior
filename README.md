@@ -102,6 +102,3 @@ The editor supports both dark and light modes to enhance user comfort, offering 
 
 This will launch the AI-Assisted Code Editor as a desktop application.
 
----
-
-Let me know if you'd like further adjustments!
