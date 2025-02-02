@@ -52,10 +52,30 @@ export default function Editor() {
     });
   };
 
-  const removeFirstAndLastLine = (textBlock) => {
-    let array = textBlock.split("\n");
-    array = array.filter(item => !(item.includes("```") || item.toLowerCase().includes("the")));
-    return array.join('\n');
+  const filterSuggestion = (item) => {
+    const filterSuggestion = item.toLowerCase().includes("the") || item.toLowerCase().includes(" is ") || item.toLowerCase().includes(" will ") || item.toLowerCase().includes(" a ") || item.toLowerCase().includes(" be ")|| item.includes("```") ;
+    return filterSuggestion;
+  }
+  // const removeFirstAndLastLine = (textBlock) => {
+  //   let array = textBlock.split("\n");
+
+  //   let arrayPureCode = array.filter(item => !(filterSuggestion(item) ));
+  //   let arraySuggestions = array.filter(item => (filterSuggestion(item)));
+  //   let tempObject = {"aiCode": arrayPureCode.join('\n'), "aiSuggestion": arraySuggestions.join('\n')};
+  //   console.log('Pankaj ', tempObject);
+  //   return tempObject;
+  // };
+
+    const removeFirstAndLastLine = (textBlock) => {
+    let array = textBlock.split("```");
+
+    let arrayPureCode = array[1].split("\n");
+    arrayPureCode.shift();
+    let arraySuggestions = array[0]
+    arraySuggestions = arraySuggestions.concat(array[2])
+        let tempObject = {"aiCode": arrayPureCode.join('\n'), "aiSuggestion": arraySuggestions};
+    // console.log('Pankaj ', tempObject);
+    return tempObject;
   };
 
   const getAiSuggestion = async (voiceCommand) => {
@@ -64,9 +84,9 @@ export default function Editor() {
 
       const response = await axios.post("http://localhost:5000/ai-autocomplete", { prompt });
 
-      const suggestion = removeFirstAndLastLine(response.data.suggestion);
-      setAiSuggestion(suggestion);
-      setCode(suggestion);
+      const { aiCode, aiSuggestion } = removeFirstAndLastLine(response.data.suggestion);
+      setAiSuggestion(aiSuggestion);
+      setCode(aiCode);
     } catch (error) {
       console.error("Error fetching AI suggestions:", error);
     }
